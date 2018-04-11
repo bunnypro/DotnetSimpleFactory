@@ -12,9 +12,6 @@ Factory.Register<Person>(faker => new Person(
     Address = faker.Person.Address
 }));
 
-// Unregister Factory
-Factory.Remove<Person>();
-
 // Generate Data
 var people = Factory.Create<Person>(4); // return IEnumerable<Person>
 
@@ -35,6 +32,9 @@ Factory.Register<Schedule>(faker => new Schedule(
     People = Factory.Create<Person>(4).ToList(),
     Date = faker.Date
 }));
+
+// Unregister Factory
+Factory.Remove<Person>();
 
 // Generate Without Register
 Factory
