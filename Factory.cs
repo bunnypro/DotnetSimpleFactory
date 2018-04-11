@@ -38,14 +38,7 @@ namespace Bunnypro.SimpleFactory
                 throw new Exception("Minimum Factory Create is One");
             }
 
-            try
-            {
-                return Enumerable.Range(0, count).Select(_ => (T)_generator(_faker));
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Factory for " + typeof(T) + " is not registered", e);
-            }
+            return Enumerable.Range(0, count).Select(_ => (T)_generator(_faker));
         }
 
         public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender)
@@ -60,28 +53,21 @@ namespace Bunnypro.SimpleFactory
                 throw new Exception("Minimum Factory Create is One");
             }
 
-            try
+            var data = new List<T>();
+
+            T GenerateUnique(Func<Faker, object> generator)
             {
-                var data = new List<T>();
+                var o = (T)generator(_faker);
 
-                T GenerateUnique(Func<Faker, object> generator)
-                {
-                    var o = (T)generator(_faker);
-
-                    return data.Contains(o) ? GenerateUnique(generator) : o;
-                }
-
-                for (var i = 0; i < count; i++)
-                {
-                    data.Add(GenerateUnique(_generator));
-                }
-
-                return data;
+                return data.Contains(o) ? GenerateUnique(generator) : o;
             }
-            catch (KeyNotFoundException e)
+
+            for (var i = 0; i < count; i++)
             {
-                throw new Exception("Factory for " + typeof(T) + " is not registered", e);
+                data.Add(GenerateUnique(_generator));
             }
+
+            return data;
         }
     }
 
@@ -102,7 +88,7 @@ namespace Bunnypro.SimpleFactory
             {
                 return Generators.Remove(typeof(T));
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
@@ -119,7 +105,7 @@ namespace Bunnypro.SimpleFactory
             {
                 return new Factory<T>(Generators[typeof(T)]).CreateOne(extender);
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
@@ -131,7 +117,7 @@ namespace Bunnypro.SimpleFactory
             {
                 return new Factory<T>(Generators[typeof(T)]).CreateOne();
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
@@ -143,7 +129,7 @@ namespace Bunnypro.SimpleFactory
             {
                 return new Factory<T>(Generators[typeof(T)]).Create(count, extender);
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
@@ -155,7 +141,7 @@ namespace Bunnypro.SimpleFactory
             {
                 return new Factory<T>(Generators[typeof(T)]).Create(count);
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
