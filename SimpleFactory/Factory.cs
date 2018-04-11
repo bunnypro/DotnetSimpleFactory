@@ -16,6 +16,8 @@ namespace Bunnypro.SimpleFactory
             _faker = new Faker();
         }
 
+        public Func<Faker, object> Generator => _generator;
+
         public T CreateOne(Func<T, Faker, T> extender)
         {
             return extender(CreateOne(), _faker);
@@ -82,6 +84,23 @@ namespace Bunnypro.SimpleFactory
             return Once<T>(generator);
         }
 
+        public static bool Has<T>()
+        {
+            return Generators.ContainsKey(typeof(T));
+        }
+
+        public static Func<Faker, object> Generator<T>()
+        {
+            try
+            {
+                return Generators[typeof(T)];
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new Exception("Factory for " + typeof(T) + " is not registered", e);
+            }
+        }
+        
         public static bool Remove<T>()
         {
             try
@@ -92,6 +111,11 @@ namespace Bunnypro.SimpleFactory
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
+        }
+
+        public static void Clear()
+        {
+            Generators.Clear();
         }
 
         public static T CreateOne<T>(Func<T, Faker, T> extender)
