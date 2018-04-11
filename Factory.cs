@@ -94,16 +94,11 @@ namespace Bunnypro.SimpleFactory
             }
         }
 
-        public static Factory<T> Once<T>(Func<Faker, object> generator)
-        {
-            return new Factory<T>(generator);
-        }
-
         public static T CreateOne<T>(Func<T, Faker, T> extender)
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).CreateOne(extender);
+                return Once<T>(Generators[typeof(T)]).CreateOne(extender);
             }
             catch (KeyNotFoundException e)
             {
@@ -115,7 +110,7 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).CreateOne();
+                return Once<T>(Generators[typeof(T)]).CreateOne();
             }
             catch (KeyNotFoundException e)
             {
@@ -127,7 +122,7 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).Create(count, extender);
+                return Once<T>(Generators[typeof(T)]).Create(count, extender);
             }
             catch (KeyNotFoundException e)
             {
@@ -139,7 +134,7 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).Create(count);
+                return Once<T>(Generators[typeof(T)]).Create(count);
             }
             catch (KeyNotFoundException e)
             {
@@ -151,7 +146,7 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).CreateUnique(count, extender);
+                return Once<T>(Generators[typeof(T)]).CreateUnique(count, extender);
             }
             catch (KeyNotFoundException e)
             {
@@ -163,12 +158,17 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return new Factory<T>(Generators[typeof(T)]).CreateUnique(count);
+                return Once<T>(Generators[typeof(T)]).CreateUnique(count);
             }
             catch (KeyNotFoundException e)
             {
                 throw new Exception("Factory for " + typeof(T) + " is not registered", e);
             }
+        }
+
+        public static Factory<T> Once<T>(Func<Faker, object> generator)
+        {
+            return new Factory<T>(generator);
         }
     }
 }

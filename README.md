@@ -32,8 +32,8 @@ Factory.Register<Schedule>(faker => new Schedule(
     People = Factory.Create<Person>(4).ToList(),
     Date = faker.Date
 }));
-
 var schedules = Factory.Create<Schedule>(10);
+
 
 // Unregister Factory
 Factory.Remove<Person>();
