@@ -8,4 +8,14 @@
     <PackageReference Include="Bogus" Version="22.0.8" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PackageId>Bunnypro.SimpleFactory</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageDescription>A Simple Dotnet Factory Library For Generating Data.</PackageDescription>
+    <Authors>Mubarrid Albar</Authors>
+    <Owners>bunnypro</Owners>
+    <PackageLicenseUrl>https://github.com/bunnypro/DotnetSimpleFactory/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/bunnypro/DotnetSimpleFactory</PackageProjectUrl>
+    <PackageTags>factory</PackageTags>
+  </PropertyGroup>
 </Project>
