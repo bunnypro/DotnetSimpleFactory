@@ -59,7 +59,7 @@ namespace Bunnypro.SimpleFactory
         public T CreateOne() => _generator(_faker);
     }
 
-    public class Factory
+    public static class Factory
     {
         private static readonly Dictionary<Type, Func<Faker, object>> Generators = new Dictionary<Type, Func<Faker, object>>();
 
