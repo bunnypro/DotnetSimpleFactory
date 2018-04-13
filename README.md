@@ -1,13 +1,16 @@
-# Dotnet Simple Object Factory
+# SimpleFactory
+
+[![Nuget](https://img.shields.io/nuget/v/Bunnypro.SimpleFactory.svg)](https://www.nuget.org/packages/Bunnypro.SimpleFactory)
+[![License](http://img.shields.io/:license-MIT-blue.svg)](https://github.com/bunnypro/DotnetSimpleFactory/blob/master/LICENSE)
 
 This library provide a simple object factory for generating data using Bogus as fake data generator.
 
-Installation via [nuget](https://www.nuget.org/packages/Bunnypro.SimpleFactory/)
+**Installation**
 ```
 dotnet add package Bunnypro.SimpleFactory  --version 1.1.1
 ```
 
-Usage Example
+**Usage Example**
 ```c#
 using Bunnypro.SimpleFactory;
 
