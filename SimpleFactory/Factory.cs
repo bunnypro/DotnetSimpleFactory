@@ -33,7 +33,7 @@ namespace Bunnypro.SimpleFactory
             return Create(count).Select(o => extender(o, _faker));
         }
 
-        public IEnumerable<T> Create(int count = 1)
+        public IEnumerable<T> Create(int count)
         {
             if (count < 1)
             {
@@ -48,7 +48,7 @@ namespace Bunnypro.SimpleFactory
             return CreateUnique(count).Select(o => extender(o, _faker));
         }
 
-        public IEnumerable<T> CreateUnique(int count = 1)
+        public IEnumerable<T> CreateUnique(int count)
         {
             if (count < 1)
             {
