@@ -7,7 +7,7 @@
   </ItemGroup>
   <PropertyGroup>
     <PackageId>Bunnypro.SimpleFactory</PackageId>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.1.1</PackageVersion>
     <PackageDescription>A Simple Dotnet Factory Library For Generating Data.</PackageDescription>
     <Authors>Mubarrid Albar</Authors>
     <Owners>bunnypro</Owners>
