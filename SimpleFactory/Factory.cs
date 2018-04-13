@@ -97,7 +97,7 @@ namespace Bunnypro.SimpleFactory
             }
             catch (KeyNotFoundException e)
             {
-                throw new Exception("Factory for " + typeof(T) + " is not registered", e);
+                throw new FactoryNotRegisteredException<T>(e);
             }
         }
         
@@ -109,7 +109,7 @@ namespace Bunnypro.SimpleFactory
             }
             catch (KeyNotFoundException e)
             {
-                throw new Exception("Factory for " + typeof(T) + " is not registered", e);
+                throw new FactoryNotRegisteredException<T>(e);
             }
         }
 
