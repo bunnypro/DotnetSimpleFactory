@@ -8,106 +8,87 @@ namespace SimpleFactoryTest
 {
     public class FactoryTest
     {
-        public FactoryTest()
+        private Func<Faker, Person> CreatePersonGenerator() => faker => new Person
         {
-            Factory.Clear();
+            Name = faker.Name.FullName(),
+            Phone = faker.Phone.PhoneNumber(),
+            Email = faker.Internet.Email()
+        };
+
+        private Factory<Person> CreatePersonFactory() => new Factory<Person>(CreatePersonGenerator());
+
+        [Fact]
+        public void CanCreateOneValidData()
+        {
+            var personFactory = CreatePersonFactory();
+            var person = personFactory.CreateOne();
+
+            Assert.IsType<Person>(person);
+            Assert.NotNull(person.Name);
+            Assert.NotNull(person.Phone);
+            Assert.NotNull(person.Email);
         }
 
         [Fact]
-        public void CanRegisterFactoryAndGetGeneratorBack()
+        public void CanCreateOneExtendedData()
         {
-            Func<Faker, string> generator = faker => faker.Random.String();
-            Factory.Register<string>(generator);
-            Assert.True(Factory.Has<string>());
-            Assert.True(generator.Equals(Factory.Generator<string>()));
-        }
-
-        [Fact]
-        public void CanRemoveFactory()
-        {
-            Factory.Register<string>(faker => faker.Random.String());
-            Assert.True(Factory.Has<string>());
-            Factory.Remove<string>();
-            Assert.False(Factory.Has<string>());
-        }
-
-        [Fact]
-        public void CanGenerateData()
-        {
-            const int count = 3;
-            Factory.Register<string>(faker => faker.Random.String());
-            var strings = Factory.Create<string>(count).ToArray();
-            Assert.True(strings.GetType() == typeof(string[]));
-            Assert.True(strings.Length == count);
-
-            Factory.Clear();
-            const string str = "Hello";
-            var generated = Factory.Once<string>(_ => str).CreateOne();
-            Assert.True(str == generated);
-        }
-
-        [Fact]
-        public void FactoryGeneratorsIsNotAffectedWhenUsingOnce()
-        {
-            Factory.Once<string>(faker => faker.Random.String());
-            Assert.False(Factory.Has<string>());
-        }
-
-        [Fact]
-        public void CanGenerateUniqueData()
-        {
-            var strings = Factory.Once<string>(faker => faker.Random.String()).CreateUnique(10).ToArray();
-            Assert.True(strings.Distinct().ToArray().Length == strings.Length);
-        }
-
-        [Fact]
-        public void CanExtendData()
-        {
-            const string name = "John";
-            var personFactory = Factory.Once<Person>(faker => new Person
+            var personFactory = CreatePersonFactory();
+            const string email = "john@doe.com";
+            var person = personFactory.CreateOne((p, faker) =>
             {
-                Name = faker.Person.FullName,
-                Email = faker.Person.Email
+                p.Email = email;
+                return p;
             });
 
-            var people = personFactory.Create(10, (person, faker) =>
-            {
-                person.Name = name;
+            Assert.Equal(email, person.Email);
+        }
 
+        [Fact]
+        public void CanCreateManyValidData()
+        {
+            var personFactory = CreatePersonFactory();
+            var people = personFactory.Create(5);
+            
+            Assert.IsType<Person[]>(people.ToArray());
+            Assert.True(people.All(person => person.Name != null && person.Email != null && person.Phone != null));
+        }
+
+        [Fact]
+        public void CanCreateManyExtendedData()
+        {
+            var personFactory = CreatePersonFactory();
+            const string email = "john@doe.com";
+            var people = personFactory.Create(5, (person, faker) =>
+            {
+                person.Email = email;
                 return person;
             });
-
-            Assert.True(people.All(p => p.Name == name));
-
-            var per = personFactory.CreateOne((person, faker) =>
-            {
-                person.Name = name;
-
-                return person;
-            });
-
-            Assert.True(name == per.Name);
+            
+            Assert.True(people.All(person => person.Email == email));
         }
 
         [Fact]
-        public void StaticFactoryAndFactoryClassShouldReturnSameGenerator()
+        public void CanCreateUniqueData()
         {
-            Func<Faker, string> generator = faker => faker.Random.String();
-            Factory.Register<string>(generator);
-            var staticFactory = Factory.Once<string>(generator);
-            var instantiatedFactory = new Factory<string>(generator);
-
-            Assert.True(
-                generator == Factory.Generator<string>() &&
-                generator == staticFactory.Generator &&
-                generator == instantiatedFactory.Generator
-            );
+            var personFactory = CreatePersonFactory();
+            var people = personFactory.CreateUnique(5);
+            
+            Assert.True(people.Distinct().Count() == people.Count());
         }
-    }
-
-    internal struct Person
-    {
-        public string Name;
-        public string Email;
+        
+        [Fact]
+        public void CanCreateUniqueExtendedData()
+        {
+            var personFactory = CreatePersonFactory();
+            const string email = "john@doe.com";
+            var people = personFactory.CreateUnique(5, (person, faker) =>
+            {
+                person.Email = email;
+                return person;
+            });
+            
+            Assert.True(people.Distinct().Count() == people.Count());
+            Assert.True(people.All(person => person.Email == email));
+        }
     }
 }
