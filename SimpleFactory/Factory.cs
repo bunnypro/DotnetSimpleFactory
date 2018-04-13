@@ -100,6 +100,11 @@ namespace Bunnypro.SimpleFactory
                 throw new FactoryNotRegisteredException<T>(e);
             }
         }
+
+        public static bool IsEmpty()
+        {
+            return Generators.Count == 0;
+        }
         
         public static bool Remove<T>()
         {
