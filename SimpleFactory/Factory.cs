@@ -16,8 +16,6 @@ namespace Bunnypro.SimpleFactory
             _faker = new Faker();
         }
 
-        public Func<Faker, object> Generator => _generator;
-
         public T CreateOne(Func<T, Faker, T> extender)
         {
             return extender(CreateOne(), _faker);
