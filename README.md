@@ -4,7 +4,7 @@ This library provide a simple object factory for generating data using Bogus as 
 
 Installation via [nuget](https://www.nuget.org/packages/Bunnypro.SimpleFactory/)
 ```
-dotnet add package Bunnypro.SimpleFactory  --version 1.0.1
+dotnet add package Bunnypro.SimpleFactory  --version 1.1.0
 ```
 
 Usage Example
@@ -14,59 +14,73 @@ using Bunnypro.SimpleFactory;
 // Register Factory
 Factory.Register<Person>(faker => new Person(
 {
-    FullName = faker.Person.FullName,
-    Address = faker.Person.Address
+    Name = faker.Name.FullName(),
+    Phone = faker.Phone.PhoneNumber(),
+    Email = faker.Internet.Email()
 }));
 
 // Generate Data
-var people = Factory.Create<Person>(4); // return IEnumerable<Person>
+IEnumerable<Person> people = Factory.Create<Person>(4);
+Person[] arrayPeople = people.ToArray();
+List<Person> listPeople = people.ToList();
+
+// Generate Unique Data
+IEnumerable<Person> people = Factory.CreateUnique<Person>(4);
 
 // Generate One Data
-var person = Factory.CreateOne<Person>(); // return Person
+Person person = Factory.CreateOne<Person>();
 
 // Extending Data
-var people = Factory.Create<Person>(4, (person, faker) =>
+static const email = "john@doe.com";
+
+IEnumerable<Person> people = Factory.CreateUnique<Person>(4, (person, faker) =>
 {
-    person.Email = faker.Person.Email;
+    person.Email = email;
 
     return person;
 });
 
+
 // Register With Generate Nested Data
 Factory.Register<Schedule>(faker => new Schedule(
 {
-    People = Factory.Create<Person>(4).ToList(),
+    People = Factory.CreateUnique<Person>(4).ToList(),
     Date = faker.Date
 }));
-var schedules = Factory.Create<Schedule>(10);
 
+IEnumerable<Schedule> schedules = Factory.Create<Schedule>(10);
+
+
+// Check Registered Factory Existence
+bool personFactoryExists = Factory.Has<Person>();
 
 // Unregister Factory
-Factory.Remove<Person>();
+bool personFactoryRemoved = Factory.Remove<Person>();
+
+// Clear Factory
+Factory.Clear();
 
 // Generate Without Register
-Factory
-    .Once<double>(
-        faker => Math.Round(faker.Random.Double(2, 4), 2)
-    ).Create(4).ToArray(); // Generate 4 double in two decimal places
+double[] doubles = Factory.Once<double>(
+    faker => Math.Round(faker.Random.Double(2, 4), 2) // generate double with two decimal places
+).Create(4).ToArray();
 
 
 // Or Another Way
-var DoubleFactory = new Factory<double>(
+Factory<double> DoubleFactory = new Factory<double>(
     faker => Math.Round(faker.Random.Double(2, 4), 2)
 );
 
-var doubles = DoubleFactory.Create(4).ToArray();
+double[] doubles = DoubleFactory.Create(4).ToArray();
 
-var PersonFactory = new Factory<Person>(faker => new Person(
+Factory<Person> PersonFactory = new Factory<Person>(faker => new Person(
 {
     FullName = faker.Person.FullName,
     Address = faker.Person.Address
 }));
 
 // same as
-
-var PersonFactory = Factory.Once<Person>(faker => new Person(
+Factory<Person> PersonFactory = Factory.Once<Person>(faker => new Person(
 {
     FullName = faker.Person.FullName,
     Address = faker.Person.Address
