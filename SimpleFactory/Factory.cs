@@ -138,7 +138,7 @@ namespace Bunnypro.SimpleFactory
             return Once(Generator<T>()).Create(count, extender);
         }
 
-        public static IEnumerable<T> Create<T>(int count = 1)
+        public static IEnumerable<T> Create<T>(int count)
         {
             return Once(Generator<T>()).Create(count);
         }
@@ -148,7 +148,7 @@ namespace Bunnypro.SimpleFactory
             return Once(Generator<T>()).CreateUnique(count, extender);
         }
 
-        public static IEnumerable<T> CreateUnique<T>(int count = 1)
+        public static IEnumerable<T> CreateUnique<T>(int count)
         {
             return Once(Generator<T>()).CreateUnique(count);
         }
