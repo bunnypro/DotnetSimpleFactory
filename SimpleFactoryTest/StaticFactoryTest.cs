@@ -140,6 +140,7 @@ namespace SimpleFactoryTest
         {
             var factory = Factory.Once(CreateGenerator);
 
+            Assert.False(Factory.Has<Person>());
             Assert.IsType<Factory<Person>>(factory);
         }
     }
