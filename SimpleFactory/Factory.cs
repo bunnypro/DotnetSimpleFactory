@@ -7,29 +7,16 @@ namespace Bunnypro.SimpleFactory
 {
     public class Factory<T>
     {
-        private readonly Func<Faker, object> _generator;
+        private readonly Func<Faker, T> _generator;
         private readonly Faker _faker;
 
-        public Factory(Func<Faker, object> generator)
+        public Factory(Func<Faker, T> generator)
         {
             _generator = generator;
             _faker = new Faker();
         }
 
-        public T CreateOne(Func<T, Faker, T> extender)
-        {
-            return extender(CreateOne(), _faker);
-        }
-
-        public T CreateOne()
-        {
-            return Create().First();
-        }
-
-        public IEnumerable<T> Create(int count, Func<T, Faker, T> extender)
-        {
-            return Create(count).Select(o => extender(o, _faker));
-        }
+        public IEnumerable<T> Create(int count, Func<T, Faker, T> extender) => Create(count).Select(o => extender(o, _faker));
 
         public IEnumerable<T> Create(int count)
         {
@@ -38,13 +25,10 @@ namespace Bunnypro.SimpleFactory
                 throw new Exception("Minimum Factory Create is One");
             }
 
-            return Enumerable.Range(0, count).Select(_ => (T)_generator(_faker));
+            return Enumerable.Range(0, count).Select(_ => _generator(_faker));
         }
 
-        public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender)
-        {
-            return CreateUnique(count).Select(o => extender(o, _faker));
-        }
+        public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender) => CreateUnique(count).Select(o => extender(o, _faker));
 
         public IEnumerable<T> CreateUnique(int count)
         {
@@ -53,33 +37,37 @@ namespace Bunnypro.SimpleFactory
                 throw new Exception("Minimum Factory Create is One");
             }
 
-            var data = new List<T>();
+            var data = new T[count];
 
-            T GenerateUnique(Func<Faker, object> generator)
+            T GenerateUnique()
             {
-                var o = (T)generator(_faker);
+                var o = CreateOne();
 
-                return data.Contains(o) ? GenerateUnique(generator) : o;
+                return data.Contains(o) ? GenerateUnique() : o;
             }
 
             for (var i = 0; i < count; i++)
             {
-                data.Add(GenerateUnique(_generator));
+                data[i] = GenerateUnique();
             }
 
-            return data;
+            return data.AsEnumerable();
         }
+
+        public T CreateOne(Func<T, Faker, T> extender) => extender(CreateOne(), _faker);
+
+        public T CreateOne() => _generator(_faker);
     }
 
     public class Factory
     {
-        private static readonly Dictionary<Type, Func<Faker, object>> Generators = new Dictionary<Type, Func<Faker, object>>();
+        private static readonly Dictionary<Type, Func<Func<Faker, object>>> Generators = new Dictionary<Type, Func<Func<Faker, object>>>();
 
-        public static Factory<T> Register<T>(Func<Faker, object> generator)
+        public static Factory<T> Register<T>(Func<Faker, T> generator)
         {
-            Generators.Add(typeof(T), generator);
+            Generators.Add(typeof(T), () => generator as Func<Faker, object>);
 
-            return Once<T>(generator);
+            return Once(generator);
         }
 
         public static bool Has<T>()
@@ -87,11 +75,11 @@ namespace Bunnypro.SimpleFactory
             return Generators.ContainsKey(typeof(T));
         }
 
-        public static Func<Faker, object> Generator<T>()
+        public static Func<Faker, T> Generator<T>()
         {
             try
             {
-                return Generators[typeof(T)];
+                return Generators[typeof(T)]() as Func<Faker, T>;
             }
             catch (KeyNotFoundException e)
             {
@@ -151,7 +139,7 @@ namespace Bunnypro.SimpleFactory
             return Once(Generator<T>()).CreateUnique(count);
         }
 
-        public static Factory<T> Once<T>(Func<Faker, object> generator)
+        public static Factory<T> Once<T>(Func<Faker, T> generator)
         {
             return new Factory<T>(generator);
         }
