@@ -4,7 +4,7 @@ This library provide a simple object factory for generating data using Bogus as 
 
 Installation via [nuget](https://www.nuget.org/packages/Bunnypro.SimpleFactory/)
 ```
-dotnet add package Bunnypro.SimpleFactory  --version 1.0.0
+dotnet add package Bunnypro.SimpleFactory  --version 1.0.1
 ```
 
 Usage Example
