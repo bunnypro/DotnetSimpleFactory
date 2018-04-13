@@ -166,7 +166,7 @@ namespace Bunnypro.SimpleFactory
             }
         }
 
-        public IEnumerable<T> CreateUnique<T>(int count, Func<T, Faker, T> extender)
+        public static IEnumerable<T> CreateUnique<T>(int count, Func<T, Faker, T> extender)
         {
             try
             {
