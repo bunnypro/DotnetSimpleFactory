@@ -75,7 +75,7 @@ namespace Bunnypro.SimpleFactory
             return Generators.ContainsKey(typeof(T));
         }
 
-        public static Func<Faker, T> Generator<T>()
+        private static Func<Faker, T> Generator<T>()
         {
             try
             {
