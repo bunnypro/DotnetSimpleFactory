@@ -61,11 +61,11 @@ namespace Bunnypro.SimpleFactory
 
     public class Factory
     {
-        private static readonly Dictionary<Type, Func<Func<Faker, object>>> Generators = new Dictionary<Type, Func<Func<Faker, object>>>();
+        private static readonly Dictionary<Type, Func<Faker, object>> Generators = new Dictionary<Type, Func<Faker, object>>();
 
         public static Factory<T> Register<T>(Func<Faker, T> generator)
         {
-            Generators.Add(typeof(T), () => generator as Func<Faker, object>);
+            Generators.Add(typeof(T), generator as Func<Faker, object>);
 
             return Once(generator);
         }
@@ -79,7 +79,7 @@ namespace Bunnypro.SimpleFactory
         {
             try
             {
-                return Generators[typeof(T)]() as Func<Faker, T>;
+                return Generators[typeof(T)] as Func<Faker, T>;
             }
             catch (KeyNotFoundException e)
             {
