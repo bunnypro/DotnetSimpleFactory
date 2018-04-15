@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Bunnypro.SimpleFactory</RootNamespace>
+    <AssemblyName>Bunnypro.SimpleFactory</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="22.0.8" />
