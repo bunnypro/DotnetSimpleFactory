@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Bogus;
 using Bunnypro.SimpleFactory;
@@ -94,6 +95,7 @@ namespace SimpleFactoryTest
             var people = Factory.Create<Person>(5);
             
             Assert.IsType<Person[]>(people.ToArray());
+            Assert.IsType<List<Person>>(people.ToList());
             Assert.True(people.All(person => person.Name != null && person.Email != null && person.Phone != null));
         }
 
