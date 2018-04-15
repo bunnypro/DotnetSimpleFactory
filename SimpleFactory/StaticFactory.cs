@@ -79,6 +79,16 @@ namespace Bunnypro.SimpleFactory
             return Once(Generator<T>()).Create(count);
         }
 
+        public static T Create<T>(Func<T, Faker, T> extender)
+        {
+            return Once(Generator<T>()).Create(extender);
+        }
+
+        public static T Create<T>()
+        {
+            return Once(Generator<T>()).Create();
+        }
+
         public static IEnumerable<T> CreateUnique<T>(int count, Func<T, Faker, T> extender)
         {
             return Once(Generator<T>()).CreateUnique(count, extender);
