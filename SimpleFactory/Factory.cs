@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
+using Bunnypro.SimpleFactory.Exceptions;
 
 namespace Bunnypro.SimpleFactory
 {
@@ -60,7 +61,7 @@ namespace Bunnypro.SimpleFactory
         {
             if (count < minimum)
             {
-                throw new Exception("Minimum Factory Create is " + minimum + ", given: " + count);
+                throw new MinimumFactoryCreateCountException(minimum, count);
             }
         }
     }
