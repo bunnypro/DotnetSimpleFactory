@@ -1,3 +1,5 @@
+#define TEST
+
 using System;
 using System.Linq;
 using Bogus;
