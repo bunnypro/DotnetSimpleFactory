@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bogus;
+using Bunnypro.SimpleFactory.Exceptions;
 
 namespace Bunnypro.SimpleFactory
 {
