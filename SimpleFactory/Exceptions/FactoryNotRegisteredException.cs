@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bunnypro.SimpleFactory
+namespace Bunnypro.SimpleFactory.Exceptions
 {
     public class FactoryNotRegisteredException<T> : Exception
     {
