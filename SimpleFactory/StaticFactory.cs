@@ -37,17 +37,10 @@ namespace Bunnypro.SimpleFactory
         {
             return Generators.Count == 0;
         }
-        
+
         public static bool Remove<T>()
         {
-            try
-            {
-                return Generators.Remove(typeof(T));
-            }
-            catch (KeyNotFoundException e)
-            {
-                throw new FactoryNotRegisteredException<T>(e);
-            }
+            return Generators.Remove(typeof(T));
         }
 
         /// <summary>
