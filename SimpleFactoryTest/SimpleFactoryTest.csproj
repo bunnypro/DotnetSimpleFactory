@@ -2,6 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Bunnypro.SimpleFactory.Test</RootNamespace>
+    <AssemblyName>Bunnypro.SimpleFactory.Test</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
