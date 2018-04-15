@@ -61,6 +61,24 @@ namespace Bunnypro.SimpleFactory.Test
         }
 
         [Fact]
+        public void CreateDataMinimumIsOne()
+        {
+            var personFactory = CreatePersonFactory();
+
+            Assert.Throws<MinimumFactoryCreateCountException>(() => personFactory.Create(0).ToArray());
+            Assert.Throws<MinimumFactoryCreateCountException>(() => personFactory.Create(0, (r, f) => r).ToArray());
+        }
+
+        [Fact]
+        public void CreateUniqueDataMinimumIsTwo()
+        {
+            var personFactory = CreatePersonFactory();
+
+            Assert.Throws<MinimumFactoryCreateCountException>(() => personFactory.CreateUnique(1).ToArray());
+            Assert.Throws<MinimumFactoryCreateCountException>(() => personFactory.CreateUnique(1, (r, f) => r).ToArray());
+        }
+
+        [Fact]
         public void CanCreateManyValidData()
         {
             var personFactory = CreatePersonFactory();

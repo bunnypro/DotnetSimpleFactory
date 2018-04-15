@@ -57,11 +57,40 @@ namespace Bunnypro.SimpleFactory.Test
         }
 
         [Fact]
+        public void CreateFromUnregisteredFactoryShouldThrowExcepton()
+        {
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.CreateUnique<Person>(2));
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.CreateUnique<Person>(2, (r, f) => r));
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.CreateOne<Person>());
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.CreateOne<Person>((r, f) => r));
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.Create<Person>());
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.Create<Person>((r, f) => r));
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.Create<Person>(1));
+            Assert.Throws<FactoryNotRegisteredException<Person>>(() => Factory.Create<Person>(1, (r, f) => r));
+        }
+
+        [Fact]
+        public void CreateDataMinimumIsOne()
+        {
+            RegisterFactory();
+
+            Assert.Throws<MinimumFactoryCreateCountException>(() => Factory.Create<Person>(0).ToArray());
+            Assert.Throws<MinimumFactoryCreateCountException>(() => Factory.Create<Person>(0, (r, f) => r).ToArray());
+        }
+
+        [Fact]
+        public void CreateUniqueDataMinimumIsTwo()
+        {
+            RegisterFactory();
+
+            Assert.Throws<MinimumFactoryCreateCountException>(() => Factory.CreateUnique<Person>(1).ToArray());
+            Assert.Throws<MinimumFactoryCreateCountException>(() => Factory.CreateUnique<Person>(1, (r, f) => r).ToArray());
+        }
+
+        [Fact]
         public void RegisterFactoryShouldReturnFactoryClass()
         {
-            var factory = RegisterFactory();
-
-            Assert.IsType<Factory<Person>>(factory);
+            Assert.IsType<Factory<Person>>(RegisterFactory());
         }
 
         [Fact]
