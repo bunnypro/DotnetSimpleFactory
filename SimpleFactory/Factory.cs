@@ -21,7 +21,7 @@ namespace Bunnypro.SimpleFactory
 
         public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender)
         {
-            AssertMinimumCreate(2, count);
+            MinimumFactoryCreateCountException.Assert(2, count);
 
             var data = new T[count];
 
@@ -48,7 +48,7 @@ namespace Bunnypro.SimpleFactory
 
         public IEnumerable<T> Create(int count, Func<T, Faker, T> extender)
         {
-            AssertMinimumCreate(1, count);
+            MinimumFactoryCreateCountException.Assert(1, count);
 
             return Enumerable.Range(0, count).Select(_ => Create(extender));
         }
@@ -56,13 +56,5 @@ namespace Bunnypro.SimpleFactory
         public T Create() => Create((r, f) => r);
         
         public T Create(Func<T, Faker, T> extender) => extender(_generator(_faker), _faker);
-
-        private static void AssertMinimumCreate(int minimum, int count)
-        {
-            if (count < minimum)
-            {
-                throw new MinimumFactoryCreateCountException(minimum, count);
-            }
-        }
     }
 }

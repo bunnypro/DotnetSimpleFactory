@@ -8,5 +8,13 @@ namespace Bunnypro.SimpleFactory.Exceptions
             base("Minimum Factory Create Count is " + minimum + ", Given: " + count)
         {
         }
+
+        public static void Assert(int minimum, int count)
+        {
+            if (count < minimum)
+            {
+                throw new MinimumFactoryCreateCountException(minimum, count);
+            }
+        }
     }
 }
