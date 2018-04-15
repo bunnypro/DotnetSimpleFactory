@@ -74,6 +74,13 @@ namespace SimpleFactoryTest
             Assert.NotNull(person.Name);
             Assert.NotNull(person.Phone);
             Assert.NotNull(person.Email);
+            
+            var person1 = Factory.Create<Person>();
+            
+            Assert.IsType<Person>(person1);
+            Assert.NotNull(person1.Name);
+            Assert.NotNull(person1.Phone);
+            Assert.NotNull(person1.Email);
         }
         
         [Fact]
@@ -88,6 +95,14 @@ namespace SimpleFactoryTest
             });
 
             Assert.Equal(email, person.Email);
+            
+            var person1 = Factory.Create<Person>((p, faker) =>
+            {
+                p.Email = email;
+                return p;
+            });
+
+            Assert.Equal(email, person1.Email);
         }
 
         [Fact]
