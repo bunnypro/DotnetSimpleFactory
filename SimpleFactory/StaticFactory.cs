@@ -59,34 +59,9 @@ namespace Bunnypro.SimpleFactory
             Generators.Clear();
         }
 
-        public static T CreateOne<T>(Func<T, Faker, T> extender)
+        public static IEnumerable<T> CreateUnique<T>(int count)
         {
-            return Once(Generator<T>()).CreateOne(extender);
-        }
-
-        public static T CreateOne<T>()
-        {
-            return Once(Generator<T>()).CreateOne();
-        }
-
-        public static IEnumerable<T> Create<T>(int count, Func<T, Faker, T> extender)
-        {
-            return Once(Generator<T>()).Create(count, extender);
-        }
-
-        public static IEnumerable<T> Create<T>(int count)
-        {
-            return Once(Generator<T>()).Create(count);
-        }
-
-        public static T Create<T>(Func<T, Faker, T> extender)
-        {
-            return Once(Generator<T>()).Create(extender);
-        }
-
-        public static T Create<T>()
-        {
-            return Once(Generator<T>()).Create();
+            return Once(Generator<T>()).CreateUnique(count);
         }
 
         public static IEnumerable<T> CreateUnique<T>(int count, Func<T, Faker, T> extender)
@@ -94,9 +69,34 @@ namespace Bunnypro.SimpleFactory
             return Once(Generator<T>()).CreateUnique(count, extender);
         }
 
-        public static IEnumerable<T> CreateUnique<T>(int count)
+        public static T CreateOne<T>()
         {
-            return Once(Generator<T>()).CreateUnique(count);
+            return Once(Generator<T>()).CreateOne();
+        }
+
+        public static T CreateOne<T>(Func<T, Faker, T> extender)
+        {
+            return Once(Generator<T>()).CreateOne(extender);
+        }
+
+        public static IEnumerable<T> Create<T>(int count)
+        {
+            return Once(Generator<T>()).Create(count);
+        }
+
+        public static IEnumerable<T> Create<T>(int count, Func<T, Faker, T> extender)
+        {
+            return Once(Generator<T>()).Create(count, extender);
+        }
+
+        public static T Create<T>()
+        {
+            return Once(Generator<T>()).Create();
+        }
+
+        public static T Create<T>(Func<T, Faker, T> extender)
+        {
+            return Once(Generator<T>()).Create(extender);
         }
 
         public static Factory<T> Once<T>(Func<Faker, T> generator)
