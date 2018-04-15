@@ -16,21 +16,21 @@ namespace Bunnypro.SimpleFactory
             _faker = new Faker();
         }
 
-        public IEnumerable<T> Create(int count, Func<T, Faker, T> extender) => Create(count).Select(o => extender(o, _faker));
+        public IEnumerable<T> Create(int count) => Create(count, (r, f) => r);
 
-        public IEnumerable<T> Create(int count)
+        public IEnumerable<T> Create(int count, Func<T, Faker, T> extender)
         {
             if (count < 1)
             {
                 throw new Exception("Minimum Factory Create is One");
             }
 
-            return Enumerable.Range(0, count).Select(_ => _generator(_faker));
+            return Enumerable.Range(0, count).Select(_ => extender(_generator(_faker), _faker));
         }
 
-        public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender) => CreateUnique(count).Select(o => extender(o, _faker));
+        public IEnumerable<T> CreateUnique(int count) => CreateUnique(count, (r, f) => r);
 
-        public IEnumerable<T> CreateUnique(int count)
+        public IEnumerable<T> CreateUnique(int count, Func<T, Faker, T> extender)
         {
             if (count < 1)
             {
@@ -48,14 +48,14 @@ namespace Bunnypro.SimpleFactory
 
             for (var i = 0; i < count; i++)
             {
-                data[i] = GenerateUnique();
+                data[i] = extender(GenerateUnique(), _faker);
             }
 
             return data.AsEnumerable();
         }
 
-        public T CreateOne(Func<T, Faker, T> extender) => extender(CreateOne(), _faker);
+        public T CreateOne() => CreateOne((r, f) => r);
 
-        public T CreateOne() => _generator(_faker);
+        public T CreateOne(Func<T, Faker, T> extender) => extender(_generator(_faker), _faker);
     }
 }
