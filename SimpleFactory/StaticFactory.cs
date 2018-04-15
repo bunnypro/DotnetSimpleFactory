@@ -49,6 +49,10 @@ namespace Bunnypro.SimpleFactory
             }
         }
 
+        /// <summary>
+        /// Used only for testing. This method can cause unexpected behaviour
+        /// </summary>
+        [Obsolete("Static Factory Clear() method is deprecated and can be only used in TEST mode in future MINOR release")]
         public static void Clear()
         {
             Generators.Clear();
