@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleFactoryTest
+namespace Bunnypro.SimpleFactory.Test
 {
     public class Person : IEquatable<Person>
     {

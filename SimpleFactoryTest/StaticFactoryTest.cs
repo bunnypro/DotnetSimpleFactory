@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
-using Bunnypro.SimpleFactory;
+using Bunnypro.SimpleFactory.Exceptions;
 using Xunit;
 
-namespace SimpleFactoryTest
+namespace Bunnypro.SimpleFactory.Test
 {
     public class StaticFactoryTest
     {
