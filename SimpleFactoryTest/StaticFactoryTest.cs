@@ -31,7 +31,7 @@ namespace Bunnypro.SimpleFactory.Test
             Assert.True(Factory.IsEmpty());
         }
 
-        [Fact]
+        [Fact(Skip = "`Clear()` method is not a public API and only used in TEST")]
         public void StaticFactoryCanBeCleared()
         {
             RegisterFactory();
