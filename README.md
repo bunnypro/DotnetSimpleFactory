@@ -15,12 +15,12 @@ dotnet add package Bunnypro.SimpleFactory
 using Bunnypro.SimpleFactory;
 
 // Register Factory
-Factory.Register<Person>(faker => new Person(
+Factory.Register<Person>(faker => new Person
 {
     Name = faker.Name.FullName(),
     Phone = faker.Phone.PhoneNumber(),
     Email = faker.Internet.Email()
-}));
+});
 
 // Generate Data
 IEnumerable<Person> people = Factory.Create<Person>(4);
@@ -45,11 +45,11 @@ IEnumerable<Person> people = Factory.CreateUnique<Person>(4, (person, faker) =>
 
 
 // Register With Generate Nested Data
-Factory.Register<Schedule>(faker => new Schedule(
+Factory.Register<Schedule>(faker => new Schedule
 {
     People = Factory.CreateUnique<Person>(4).ToList(),
     Date = faker.Date
-}));
+});
 
 IEnumerable<Schedule> schedules = Factory.Create<Schedule>(10);
 
@@ -76,18 +76,18 @@ Factory<double> DoubleFactory = new Factory<double>(
 
 double[] doubles = DoubleFactory.Create(4).ToArray();
 
-Factory<Person> PersonFactory = new Factory<Person>(faker => new Person(
+Factory<Person> PersonFactory = new Factory<Person>(faker => new Person
 {
     FullName = faker.Person.FullName,
     Address = faker.Person.Address
-}));
+});
 
 // same as
-Factory<Person> PersonFactory = Factory.Once<Person>(faker => new Person(
+Factory<Person> PersonFactory = Factory.Once<Person>(faker => new Person
 {
     FullName = faker.Person.FullName,
     Address = faker.Person.Address
-}));
+});
 
 var people = PersonFactory.Create(100);
 ```
